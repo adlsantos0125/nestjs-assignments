@@ -1,12 +1,23 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Get, Param, } from '@nestjs/common';
 
-@Controller()
-export class AppController {
-  constructor(private readonly appService: AppService) {}
+@Controller('prime-number')
+export class PrimeNumberController {
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
+    @Get(':n')
+    checkPrime(@Param('n') n: string): { isPrime: boolean } {
+        const numberN = parseInt(n, 10);
+        const isPrime = this.isPrime(numberN);
+        return { isPrime };
+    }
+
+    private isPrime(num: number): boolean {
+        if (num < 2) return false; 
+        for (let i = 2; i <= Math.sqrt(num); i++) {
+            if (num % i === 0) {
+                return false;
+            }
+        }
+        
+        return true; 
+    }
 }
